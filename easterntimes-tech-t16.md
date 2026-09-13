@@ -92,7 +92,12 @@ Device Descriptor:
         bInterval               1
 ```
 
-### 0x81 Endpoint
+| Interface	| Class | Subclass	| Protocol	| Endpoint	| Report descriptor |
+| --- | --- | --- | --- | --- | --- |
+| 0	| HID	| Boot	| Mouse	| 0x81 IN	| 71 bytes |
+| 1 | HID | Boot | Keyboard | 0x82 IN	| 259 bytes |
+
+### 0x81 Endpoint (HID; `bInterfaceProtocol = Mouse`)
 is used for standard mouse buttons (Left/Right/Middle -Click, Mouse Wheel) and movement:
 (In Wireshark the actual payload is 7 bytes in the 'Leftover Capture Data')
 
@@ -102,7 +107,8 @@ is used for standard mouse buttons (Left/Right/Middle -Click, Mouse Wheel) and m
 | Byte 0 | Buttons |
 | Bytes 1-2 | X movement, signed 16-bit little-endian |
 | Bytes 3-4 | Y movement, signed 16-bit little-endian |
-| Bytes 5-6 | Unknown / unused / additional axis |
+| Byte 5 |	Maybe: Scroll wheel,	Signed 8-bit relative value |
+| Byte 6 | Unknown / unused |
 
 **Byte 0 - button bitmask**
 | Bit | Functionality |
@@ -111,17 +117,33 @@ is used for standard mouse buttons (Left/Right/Middle -Click, Mouse Wheel) and m
 | Bit 1 | Right button |
 | Bit 2 | Middle button |
 | Bits 3-7 | Unknown/reserved |
-(on this endpoint when a button is released the payload `00 00 00 00 00 00 00 00` is sent)
+
+(on this endpoint when a button is released the payload `00 00 00 00 00 00 00` is sent)
 
 **Bytes 1-4 - movement**
-- Coordinatesystem works as follows:
+- coordinate system works as follows:
   - `+X = right`
   - `-X = left`
   - `+Y = down`
   - `-Y = up`
 
+**Byte 5 - Scroll wheel**
+| Payload | Functionality |
+| --- | --- |
+| `00 00 00 00 00 01 00` | Up |
+| `00 00 00 00 00 FF 00` | Down |
+
+(just two known values, which makes deriving the format difficult)
 
 
-### 0x82 Endpoint
+
+### 0x82 Endpoint (HID; `bInterfaceProtocol = Keyboard`)
 is used for custom button (for example DPI changes)
 (on this endpoints a button release isn't captured)
+
+- Data Length: 5 bytes
+
+| Action	| Payload |
+| --- | --- |
+| DPI Up	| `07 01 82 05 00` |
+| DPI Down	| `07 01 81 04 00` |
