@@ -1,3 +1,5 @@
+## Reverse engineering of the _Easterntimes Tech T16_ Gaming Mouse
+
 Information gathered by `lsusb -v`:
 ```
 ID 258a:1007 SINOWEALTH Game Mouse
@@ -89,3 +91,37 @@ Device Descriptor:
         wMaxPacketSize     0x0008  1x 8 bytes
         bInterval               1
 ```
+
+### 0x81 Endpoint
+is used for standard mouse buttons (Left/Right/Middle -Click, Mouse Wheel) and movement:
+(In Wireshark the actual payload is 7 bytes in the 'Leftover Capture Data')
+
+**Payload**
+| Bytes | Functionality |
+| --- | --- |
+| Byte 0 | Buttons |
+| Bytes 1-2 | X movement, signed 16-bit little-endian |
+| Bytes 3-4 | Y movement, signed 16-bit little-endian |
+| Bytes 5-6 | Unknown / unused / additional axis |
+
+**Byte 0 - button bitmask**
+| Bit | Functionality |
+| --- | --- |
+| Bit 0 | Left button |
+| Bit 1 | Right button |
+| Bit 2 | Middle button |
+| Bits 3-7 | Unknown/reserved |
+(on this endpoint when a button is released the payload `00 00 00 00 00 00 00 00` is sent)
+
+**Bytes 1-4 - movement**
+- Coordinatesystem works as follows:
+  - `+X = right`
+  - `-X = left`
+  - `+Y = down`
+  - `-Y = up`
+
+
+
+### 0x82 Endpoint
+is used for custom button (for example DPI changes)
+(on this endpoints a button release isn't captured)
