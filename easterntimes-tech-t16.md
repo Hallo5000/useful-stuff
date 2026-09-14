@@ -183,8 +183,145 @@ I: 3 0001 0001
 
 
 ### 0x82 Endpoint (HID; `bInterfaceProtocol = Keyboard`)
-is used for custom button (for example DPI changes)
-(on this endpoints a button release isn't captured)
+(on this endpoints a button release isn't captured and same goes for buttons which are not set to anything)
+
+**Report descriptor** (decoded with `hid-tools/hid-decode`)
+```
+# device 0:0
+# 0x05, 0x01,                    // Usage Page (Generic Desktop)        0
+# 0x09, 0x06,                    // Usage (Keyboard)                    2
+# 0xa1, 0x01,                    // Collection (Application)            4
+# 0x85, 0x01,                    //  Report ID (1)                      6
+# 0x05, 0x07,                    //  Usage Page (Keyboard)              8
+# 0x19, 0xe0,                    //  Usage Minimum (224)                10
+# 0x29, 0xe7,                    //  Usage Maximum (231)                12
+# 0x15, 0x00,                    //  Logical Minimum (0)                14
+# 0x25, 0x01,                    //  Logical Maximum (1)                16
+# 0x75, 0x01,                    //  Report Size (1)                    18
+# 0x95, 0x08,                    //  Report Count (8)                   20
+# 0x81, 0x02,                    //  Input (Data,Var,Abs)               22
+# 0x95, 0x06,                    //  Report Count (6)                   24
+# 0x75, 0x08,                    //  Report Size (8)                    26
+# 0x15, 0x00,                    //  Logical Minimum (0)                28
+# 0x26, 0xff, 0x00,              //  Logical Maximum (255)              30
+# 0x05, 0x07,                    //  Usage Page (Keyboard)              33
+# 0x19, 0x00,                    //  Usage Minimum (0)                  35
+# 0x2a, 0xff, 0x00,              //  Usage Maximum (255)                37
+# 0x81, 0x00,                    //  Input (Data,Arr,Abs)               40
+# 0xc0,                          // End Collection                      42
+# 0x06, 0x0c, 0x00,              // Usage Page (Consumer Devices)       43
+# 0x09, 0x01,                    // Usage (Consumer Control)            46
+# 0xa1, 0x01,                    // Collection (Application)            48
+# 0x85, 0x02,                    //  Report ID (2)                      50
+# 0x25, 0x01,                    //  Logical Maximum (1)                52
+# 0x15, 0x00,                    //  Logical Minimum (0)                54
+# 0x75, 0x01,                    //  Report Size (1)                    56
+# 0x0a, 0xb5, 0x00,              //  Usage (Scan Next Track)            58
+# 0x0a, 0xb6, 0x00,              //  Usage (Scan Previous Track)        61
+# 0x0a, 0xb7, 0x00,              //  Usage (Stop)                       64
+# 0x0a, 0xcd, 0x00,              //  Usage (Play/Pause)                 67
+# 0x0a, 0xe2, 0x00,              //  Usage (Mute)                       70
+# 0x0a, 0xa2, 0x00,              //  Usage (Daily)                      73
+# 0x0a, 0xe9, 0x00,              //  Usage (Volume Up)                  76
+# 0x0a, 0xea, 0x00,              //  Usage (Volume Down)                79
+# 0x95, 0x08,                    //  Report Count (8)                   82
+# 0x81, 0x03,                    //  Input (Cnst,Var,Abs)               84
+# 0x0a, 0x83, 0x01,              //  Usage (AL Consumer Control Config) 86
+# 0x0a, 0x94, 0x01,              //  Usage (AL Local Machine Browser)   89
+# 0x0a, 0x86, 0x01,              //  Usage (AL Spreadsheet)             92
+# 0x0a, 0x88, 0x01,              //  Usage (AL Presentation App)        95
+# 0x0a, 0x8a, 0x01,              //  Usage (AL Email Reader)            98
+# 0x0a, 0x92, 0x01,              //  Usage (AL Calculator)              101
+# 0x0a, 0xa8, 0x02,              //  Usage (Vendor Usage 0x2a8)         104
+# 0x0a, 0x84, 0x01,              //  Usage (AL Word Processor)          107
+# 0x95, 0x08,                    //  Report Count (8)                   110
+# 0x81, 0x03,                    //  Input (Cnst,Var,Abs)               112
+# 0x0a, 0x21, 0x02,              //  Usage (AC Search)                  114
+# 0x0a, 0x23, 0x02,              //  Usage (AC Home)                    117
+# 0x0a, 0x24, 0x02,              //  Usage (AC Back)                    120
+# 0x0a, 0x25, 0x02,              //  Usage (AC Forward)                 123
+# 0x0a, 0x26, 0x02,              //  Usage (AC Stop)                    126
+# 0x0a, 0x27, 0x02,              //  Usage (AC Refresh)                 129
+# 0x0a, 0x2a, 0x02,              //  Usage (AC Bookmarks)               132
+# 0x0a, 0xb1, 0x02,              //  Usage (Vendor Usage 0x2b1)         135
+# 0x95, 0x08,                    //  Report Count (8)                   138
+# 0x81, 0x03,                    //  Input (Cnst,Var,Abs)               140
+# 0xc0,                          // End Collection                      142
+# 0x06, 0x00, 0xff,              // Usage Page (Vendor Defined Page 1)  143
+# 0x09, 0x01,                    // Usage (Vendor Usage 1)              146
+# 0xa1, 0x01,                    // Collection (Application)            148
+# 0x85, 0x04,                    //  Report ID (4)                      150
+# 0x15, 0x00,                    //  Logical Minimum (0)                152
+# 0x26, 0xff, 0x00,              //  Logical Maximum (255)              154
+# 0x09, 0x00,                    //  Usage (Undefined)                  157
+# 0x75, 0x08,                    //  Report Size (8)                    159
+# 0x95, 0x3a,                    //  Report Count (58)                  161
+# 0xb1, 0x02,                    //  Feature (Data,Var,Abs)             163
+# 0xc0,                          // End Collection                      165
+# 0x06, 0x00, 0xff,              // Usage Page (Vendor Defined Page 1)  166
+# 0x09, 0x01,                    // Usage (Vendor Usage 1)              169
+# 0xa1, 0x01,                    // Collection (Application)            171
+# 0x85, 0x06,                    //  Report ID (6)                      173
+# 0x15, 0x00,                    //  Logical Minimum (0)                175
+# 0x26, 0xff, 0x00,              //  Logical Maximum (255)              177
+# 0x09, 0x00,                    //  Usage (Undefined)                  180
+# 0x75, 0x08,                    //  Report Size (8)                    182
+# 0x96, 0x78, 0x04,              //  Report Count (1144)                184
+# 0xb1, 0x02,                    //  Feature (Data,Var,Abs)             187
+# 0xc0,                          // End Collection                      189
+# 0x06, 0x00, 0xff,              // Usage Page (Vendor Defined Page 1)  190
+# 0x09, 0x01,                    // Usage (Vendor Usage 1)              193
+# 0xa1, 0x01,                    // Collection (Application)            195
+# 0x85, 0x07,                    //  Report ID (7)                      197
+# 0x15, 0x00,                    //  Logical Minimum (0)                199
+# 0x26, 0xff, 0x00,              //  Logical Maximum (255)              201
+# 0x09, 0x00,                    //  Usage (Undefined)                  204
+# 0x75, 0x08,                    //  Report Size (8)                    206
+# 0x95, 0x04,                    //  Report Count (4)                   208
+# 0x81, 0x00,                    //  Input (Data,Arr,Abs)               210
+# 0xc0,                          // End Collection                      212
+# 0x06, 0x00, 0xff,              // Usage Page (Vendor Defined Page 1)  213
+# 0x09, 0x01,                    // Usage (Vendor Usage 1)              216
+# 0xa1, 0x01,                    // Collection (Application)            218
+# 0x85, 0x08,                    //  Report ID (8)                      220
+# 0x15, 0x00,                    //  Logical Minimum (0)                222
+# 0x26, 0xff, 0x00,              //  Logical Maximum (255)              224
+# 0x09, 0x00,                    //  Usage (Undefined)                  227
+# 0x75, 0x08,                    //  Report Size (8)                    229
+# 0x95, 0x08,                    //  Report Count (8)                   231
+# 0xb1, 0x02,                    //  Feature (Data,Var,Abs)             233
+# 0xc0,                          // End Collection                      235
+# 0x06, 0x00, 0xff,              // Usage Page (Vendor Defined Page 1)  236
+# 0x09, 0x01,                    // Usage (Vendor Usage 1)              239
+# 0xa1, 0x01,                    // Collection (Application)            241
+# 0x85, 0x05,                    //  Report ID (5)                      243
+# 0x15, 0x00,                    //  Logical Minimum (0)                245
+# 0x26, 0xff, 0x00,              //  Logical Maximum (255)              247
+# 0x09, 0x00,                    //  Usage (Undefined)                  250
+# 0x95, 0x05,                    //  Report Count (5)                   252
+# 0x75, 0x08,                    //  Report Size (8)                    254
+# 0xb1, 0x02,                    //  Feature (Data,Var,Abs)             256
+# 0xc0,                          // End Collection                      258
+# 
+R: 259 05 01 09 06 a1 01 85 01 05 07 19 e0 29 e7 15 00 25 01 75 01 95 08 81 02 95 06 75 08 15 00 26 ff 00 05 07 19 00 2a ff 00 81 00 c0 06 0c 00 09 01 a1 01 85 02 25 01 15 00 75 01 0a b5 00 0a b6 00 0a b7 00 0a cd 00 0a e2 00 0a a2 00 0a e9 00 0a ea 00 95 08 81 03 0a 83 01 0a 94 01 0a 86 01 0a 88 01 0a 8a 01 0a 92 01 0a a8 02 0a 84 01 95 08 81 03 0a 21 02 0a 23 02 0a 24 02 0a 25 02 0a 26 02 0a 27 02 0a 2a 02 0a b1 02 95 08 81 03 c0 06 00 ff 09 01 a1 01 85 04 15 00 26 ff 00 09 00 75 08 95 3a b1 02 c0 06 00 ff 09 01 a1 01 85 06 15 00 26 ff 00 09 00 75 08 96 78 04 b1 02 c0 06 00 ff 09 01 a1 01 85 07 15 00 26 ff 00 09 00 75 08 95 04 81 00 c0 06 00 ff 09 01 a1 01 85 08 15 00 26 ff 00 09 00 75 08 95 08 b1 02 c0 06 00 ff 09 01 a1 01 85 05 15 00 26 ff 00 09 00 95 05 75 08 b1 02 c0
+N: device 0:0
+I: 3 0001 0001
+```
+This interface uses multiple `Report ID`s:
+| Report ID | Usage Page | Usage | Collection |
+| --- | --- | --- | --- |
+| 1 | Generic Desktop | Keyboard | Application |
+| 2 | Consumer Devices | Consumer Control | Application |
+| 4 | Vendor Defined Page 1 | Vendor Usage 1 | Application |
+| 5 | Vendor Defined Page 1 | Vendor Usage 1 | Application |
+| 6 | Vendor Defined Page 1 | Vendor Usage 1 | Application |
+| 7 | Vendor Defined Page 1 | Vendor Usage 1 | Application |
+| 8 | Vendor Defined Page 1 | Vendor Usage 1 | Application |
+
+
+
+---
+Out of Context: (from capturing traffic with wireshark)
 
 - Data Length: 5 bytes
 
